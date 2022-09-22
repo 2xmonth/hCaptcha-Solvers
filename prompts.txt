@@ -1,0 +1,3 @@
+lists of hcaptcha prompts changed around for stable diffusion
+ex:
+a toy rabbit sitting, hyperrealistic
