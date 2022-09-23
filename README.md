@@ -16,6 +16,7 @@ I don't know how else to explain this, the images are clearly messed up.
 
 Also, look at:
 ![alt text](https://github.com/2xmonth/hCaptcha-Solvers/blob/main/resources/txt2img2.png?raw=true)
+
 This one is clearly wrong as well.
 
 ## Installing
@@ -26,4 +27,12 @@ Todo
 
 ## Training
 
-Make several thousand images using stable diffusion img2img with the base image as an actual image from hCaptcha (For best results only make a couple of hundred images (still figuring out the exact number) for each real image). Make sure that the images stick to the general idea of the base image while also being different enough (mess around with the variation slider)
+Make several thousand 512x512 images (I know hcaptcha uses 122x122, but stable diffusion doesn't do a great job making those images) with img2img with the base image as an actual image from hCaptcha (For best results only make a couple of hundred images (still figuring out the exact number) for each real image). 
+
+Make sure that the images stick to the general idea of the base image while also being different enough.
+
+Settings you should mess with:
+Denoising strength (with my limited testing I have found between 0.65-0.70 works the best)
+Sampling steps (if you want better images)
+
+I'll probably do all ^ later, but until then you have to figure out what works
