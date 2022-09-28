@@ -32,7 +32,7 @@ Make several thousand 512x512 images (I know hcaptcha uses 122x122, but stable d
 Make sure that the images stick to the general idea of the base image while also being different enough.
 
 Settings you should mess with:
-Denoising strength (with my limited testing I have found between 0.65-0.70 works the best)
+Denoising strength (with my limited testing I have found between 0.67-0.73 works the best. I like 0.72, but it varies for each image)
 Sampling steps (if you want better images)
 
 I'll probably do all ^ later, but until then you have to figure out what works
