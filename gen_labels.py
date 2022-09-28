@@ -15,7 +15,7 @@ def main():
             dataset.gen_label(dire, file, 0)
             desc = f"{file[:-4]}.yaml"
             try:
-                os.remove(f"images/train/{dire}/{desc}")
+                os.remove(f"images/train/{dire}/{desc}")`
             except:
                 pass
 
