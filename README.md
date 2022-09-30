@@ -1,3 +1,8 @@
+# Current Status:
+I finished my test dataset of rabbits in grass, toy rabbits, and horses running, and my model worked pretty good.
+Now I will gen all the other images for all of the current prompts. 
+
+
 # hCaptcha-Solvers
 My hCaptcha solver + dataset creator.
 
@@ -18,6 +23,12 @@ Also, look at:
 ![alt text](https://github.com/2xmonth/hCaptcha-Solvers/blob/main/resources/txt2img2.png?raw=true)
 
 This one is clearly wrong as well.
+
+
+### hCaptcha prompt extraction
+To extract prompts run prompts.py. Use a vpn to help prevent ip bans.
+
+I'm not sure how effective the prompt extractor is on 1 ip, I would recommend proxies so that you will have the highest chance of getting new prompts because hcaptcha is probably only giving each ip a selection of prompts
 
 ## Installing
 

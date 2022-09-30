@@ -1,3 +1,8 @@
-lists of hcaptcha prompts changed around for stable diffusion
-ex:
-a toy rabbit sitting, hyperrealistic
+a duck in the water, hyperrealistic
+a toy house, hyperrealistic
+a toy rabbit, hyperrealistic
+a duck, hyperrealistic
+a penguin surrounded by flowers, hyperrealistic
+a plant hanging from the ceiling, hyperrealistic
+a rabbit in the grass, hyperrealistic
+a plant on the table, hyperrealistic

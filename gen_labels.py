@@ -10,12 +10,12 @@ def main():
     for i, dire in enumerate(dirs):
         classes[i] = dire
 
-        files = dataset.get_img_names(f"images/train/{dire}")
+        files = dataset.get_img_names(f"images/train/")
         for file in files:
-            dataset.gen_label(dire, file, 0)
+            dataset.gen_label(file, i)
             desc = f"{file[:-4]}.yaml"
             try:
-                os.remove(f"images/train/{dire}/{desc}")`
+                os.remove(f"images/train/{desc}")
             except:
                 pass
 
