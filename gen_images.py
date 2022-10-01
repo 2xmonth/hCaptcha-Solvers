@@ -100,7 +100,7 @@ def extract(prompt, num_imgs, denoising, img_path):
 
     payload = {"fn_index": 34, "data": [f"\"{id}\""], "session_hash": hash}
     print(payload)
-    print(httpx.post("http://localhost:7860/api/predict/", headers=temp, json=json.dumps(payload)).text)
+    print(httpx.post("https://httpbin.org/post", headers=temp, json=json.dumps(payload)).text)
     payload = {"fn_index": 33, "data": [f"\"{id}\""], "session_hash": hash}
     print(httpx.post("http://localhost:7860/api/predict/", headers=temp, json=json.dumps(payload)).text)
 
