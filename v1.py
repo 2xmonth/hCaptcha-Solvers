@@ -1,12 +1,12 @@
 # solver v1
 
-import selenium.common.exceptions
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 import undetected_chromedriver as uc
 from difflib import SequenceMatcher
+import selenium.common.exceptions
 import concurrent.futures
 from time import sleep
 import pyautogui
@@ -145,14 +145,12 @@ def main():
 
     load_cap(driver)
     button_txt = driver.find_element(By.XPATH, "/html/body/div[2]/div[8]/div").text
-    while button_txt == "Skip" or "button_txt" == "Verify" and attempts <= 6:
+    while button_txt == "Skip" or button_txt == "Verify" and attempts <= 6:
         button_txt = solve(driver, model, driver.find_element(By.XPATH, "/html/body/div[1]/div/div/div[1]/div[1]/div[1]/h2/span").text[35:])
         attempts += 1
 
         if button_txt == "Skip" and attempts > 2:
             refresh(driver)
-
-
 
     sleep(5)
 
