@@ -51,8 +51,8 @@ def extract(prompt, num_imgs, denoising, img_path):
         
     }    
 
-    print(httpx.post("http://localhost:7860/api/predict/", headers=headers, json={"fn_index": 34, "data": ["\"95556fc0be444c3c99504fbe54bfa3f6\""], "session_hash": "5mhfkx2ueug"}).text)
-    print(httpx.post("http://localhost:7860/api/predict/", headers=headers, json={"fn_index": 33, "data": ["\"95556fc0be444c3c99504fbe54bfa3f6\""], "session_hash": "5mhfkx2ueug"}).text)
+    print(httpx.post("http://localhost:7860/api/predict/", headers=headers, timeout=None, json={"fn_index": 34, "data": ["\"95556fc0be444c3c99504fbe54bfa3f6\""], "session_hash": "5mhfkx2ueug"}).text)
+    print(httpx.post("http://localhost:7860/api/predict/", headers=headers, timeout=None, json={"fn_index": 33, "data": ["\"95556fc0be444c3c99504fbe54bfa3f6\""], "session_hash": "5mhfkx2ueug"}).text)
 
 
 for prompt in open("prompts.txt"):
