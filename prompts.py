@@ -48,7 +48,7 @@ def extract():
             lines = set(r.readlines())
             if prompt not in lines:
                 with open("prompts.txt", "a") as a:
-                    print(f"Encountered new prompt \"{prompt}\"")
+                    print(f"Encountered new prompt \"{prompt[:-1]}\"")
                     a.write(prompt)
 
         driver.quit()
