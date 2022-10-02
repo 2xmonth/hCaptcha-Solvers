@@ -14,7 +14,8 @@ import httpx
 import json
 import cv2
 
-ua = "Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101 Firefox/91.0"
+ua = "Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101 Firefox/102.0"
+
 
 def extract(prompt, num_imgs, denoising, img_path):
     jpg_img = cv2.imencode('.jpg', cv2.imread(img_path))
@@ -40,11 +41,34 @@ def extract(prompt, num_imgs, denoising, img_path):
 
     print("Finished processing")
 
+    headers = {
+        
+        "User-Agent": ua,
+        "Accept": "*/*",
+        "Accept-Language": "en-US,en;q=0.5",
+        "Accept-Encoding": "gzip, deflate, br",
+        "Referer": "http://localhost:7860/",
+        "Content-Type": "application/json",
+        "Origin": "http://localhost:7860",
+        "Connection": "keep-alive",
+        "Sec-Fetch-Dest": "empty",
+        "Sec-Fetch-Mode": "cors",
+        "Sec-Fetch-Site": "same-origin",
+        "Pragma": "no-cache",
+        "Cache-Control": "no-cache"
+        
+    }    
+
+    print(httpx.post("http://localhost:7860/api/predict/", headers=headers, json={"fn_index":34,"data":["\"95556fc0be444c3c99504fbe54bfa3f6\""],"session_hash":"5mhfkx2ueug"}).text)
+    print(httpx.post("http://localhost:7860/api/predict/", headers=headers, json={"fn_index":33,"data":["\"95556fc0be444c3c99504fbe54bfa3f6\""],"session_hash":"5mhfkx2ueug"}).text)
 
 
 
 
-extract("a duck, hyperrealistic", "10", "0.72", "hcaptcha-imgs/a duck/0.19944892886786414.png")
+
+
+
+extract("a duck, hyperrealistic", 1, 0.72, "hcaptcha-imgs/a duck/0.19944892886786414.png")
 
 
 
