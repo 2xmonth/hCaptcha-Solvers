@@ -1,6 +1,14 @@
 # Current Status:
-I finished my test dataset of rabbits in grass, toy rabbits, and horses running, and my model worked pretty good.
-Now I will gen all the other images for all of the current prompts. 
+I have trained a yolov7 model on the following prompts:
+a rabbit in grass
+a plant hanging from the ceiling
+a house in the beach
+a dead and dried plant in the pot
+a horse running
+a penguin surrounded by flowers
+a toy rabbit
+a toy house
+a duck
 
 
 # hCaptcha-Solvers
