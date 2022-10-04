@@ -7,7 +7,7 @@ from selenium.webdriver.common.by import By
 import undetected_chromedriver as uc
 from difflib import SequenceMatcher
 import selenium.common.exceptions
-import concurrent.futures
+from colorama import Style, Fore, init
 from time import sleep
 import pyautogui
 import random
@@ -17,7 +17,12 @@ import os
 from curves.humanclicker import HumanClicker
 
 pyautogui.MINIMUM_DURATION = 0.001
+init(autoreset=True)
 hc = HumanClicker()
+
+yellow = f"{Style.BRIGHT}{Fore.YELLOW}"
+green = f"{Style.BRIGHT}{Fore.GREEN}"
+purple = f"{Style.BRIGHT}{Fore.MAGENTA}"
 
 
 def load_model():
@@ -47,21 +52,22 @@ def load_cap(driver):
     WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.XPATH, "/html/body/div[1]/iframe")))
 
     driver.switch_to.frame(driver.find_element(By.XPATH, "/html/body/div[1]/iframe"))
+
+    WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.XPATH, "/html/body/div/div[1]/div[1]/div/div/div[1]")))
     sleep(0.3)
-    pos = pyautogui.position()
 
-    box_dim = driver.find_element(By.XPATH, "/html/body/div/div[1]/div[1]/div/div/div[1]")
-
-    box_el_x = box_dim.location["x"]
-    box_el_y = box_dim.location["y"]
-    box_el_width = box_dim.size["width"] // 2
-    box_el_height = box_dim.size["height"] // 2
-
-    box_mid = (box_el_x + box_el_width, box_el_y + box_el_height)
+    # box_dim = driver.find_element(By.XPATH, "/html/body/div/div[1]/div[1]/div/div/div[1]")
+    #
+    # box_el_x = box_dim.location["x"]
+    # box_el_y = box_dim.location["y"]
+    # box_el_width = box_dim.size["width"] // 2
+    # box_el_height = box_dim.size["height"] // 2
+    #
+    # box_mid = (box_el_x + box_el_width, box_el_y + box_el_height)
 
     # todo x and y for above are broken, must be something weird with iframes
 
-    points = hc.get_points(start=pos, end=(1156, 827),
+    points = hc.get_points(start=pyautogui.position(), end=(1156, 827),
                            knotCounts=0)  # if this part is breaking for you its because these coords are hard coded (duh) and i havent gotten the above x + y coords correct yet
 
     for point in points:
@@ -81,50 +87,50 @@ def load_cap(driver):
             iframe = None
 
     driver.switch_to.frame(iframe)
-
+    WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.XPATH, "/html/body/div[1]/div/div/div[1]/div[1]/div[1]/h2/span")))
     prompt = driver.find_element(By.XPATH, "/html/body/div[1]/div/div/div[1]/div[1]/div[1]/h2/span").text[35:]
-    print(prompt)
+    print(f"{yellow}Prompt: {prompt}")
 
 
 def solve(driver, model, prompt):
     img_els = driver.find_elements(By.CLASS_NAME, "border-focus")
-    pairs = []
+    correct_images = set()
 
     for img_el in img_els:
         path = f"elements/{random.random()}.png"
 
         img_el.screenshot(path)
-        pairs.append(f"{path}:{img_el}")
 
-    for pair in pairs:
-        path, img_el = pair.split(":")
         results = predict(model, path)
         os.remove(path)
         df = results.pandas().xyxy[0]
 
         for detection in df.loc[:, "name"].values:
-            print(detection)
             sim = similar(prompt, detection)
-            if sim >= 0.50:
-                print(f"Detected {prompt}")
+            if sim >= 0.5 or detection in prompt:
+                print(f"{yellow}Detected {prompt}")
+                correct_images.add(img_el)
+                break
 
-                points = hc.get_points(start=pyautogui.position(), end=(img_el.location["x"] + random.randint(20, 30), img_el.location["y"] + random.randint(20, 30)), knotCounts=0)  # todo check if this works
 
-                for point in points:
-                    pyautogui.moveTo(point)
+    for img_el in correct_images:
+        #points = hc.get_points(start=pyautogui.position(), end=(img_el.location["x"] + random.randint(20, 30), img_el.location["y"] + random.randint(20, 30)), knotCounts=0)  # todo fix element locations
 
-                sleep(0.08)
-                pyautogui.click()
-                sleep(0.75)
-            else:
-                print(sim)
+        # for point in points:
+        #     pyautogui.moveTo(point)
+
+        actions = ActionChains(driver)
+        actions.click(img_el).perform()
+        sleep(0.2)
+
+    WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.XPATH, "/html/body/div[2]/div[8]")))
 
     actions = ActionChains(driver)
     actions.move_to_element(driver.find_element(By.XPATH, "/html/body/div[2]/div[8]")).perform()
     sleep(0.0765)
     actions.click().perform()
 
-    sleep(0.75)
+    sleep(2)
 
     try:
         button_txt = driver.find_element(By.XPATH, "/html/body/div[2]/div[8]/div").text
@@ -136,20 +142,24 @@ def solve(driver, model, prompt):
 
 
 def main():
-    attempts = 0
-    model = load_model()  # this model is not the full one, this one only can do toy rabbits, running horses, and rabbits in grass. i will train the full one once this is closer to done and i make the full dataset
+    attempts = 1
+    model = load_model()
     driver = uc.Chrome(headless=False)  # im using pyautogui for testing, so once thats gone you will be able to use headless
     driver.maximize_window()
 
     print("\n\n")
 
     load_cap(driver)
+
     button_txt = driver.find_element(By.XPATH, "/html/body/div[2]/div[8]/div").text
-    while button_txt == "Skip" or button_txt == "Verify" and attempts <= 6:
+    while button_txt == "Skip" or button_txt == "Verify" and attempts <= 8:
+        sleep(2)
+        print(f"{yellow}Solving. Attempt: {attempts}")
         button_txt = solve(driver, model, driver.find_element(By.XPATH, "/html/body/div[1]/div/div/div[1]/div[1]/div[1]/h2/span").text[35:])
+        print(button_txt)
         attempts += 1
 
-        if button_txt == "Skip" and attempts > 2:
+        if button_txt == "Skip" and attempts > 3:
             refresh(driver)
 
     sleep(5)

@@ -1,4 +1,4 @@
 model1.pt
 best.pt
-images/train/
-labels/train/
+images/
+labels/
