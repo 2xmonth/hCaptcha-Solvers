@@ -2,3 +2,7 @@ model1.pt
 best.pt
 images/
 labels/
+
+
+poc/
+# stuff in ^ is proof of concept. it is not ready to be fully released, so thats why its being git ignored.

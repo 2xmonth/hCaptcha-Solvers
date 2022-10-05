@@ -1,14 +1,19 @@
 # Current Status:
 I have trained a yolov7 model on the following prompts:
-a rabbit in grass
-a plant hanging from the ceiling
-a house in the beach
-a dead and dried plant in the pot
-a horse running
-a penguin surrounded by flowers
-a toy rabbit
-a toy house
-a duck
+- a rabbit in grass
+- a plant hanging from the ceiling
+- a house in the beach
+- a dead and dried plant in the pot
+- a horse running
+- a penguin surrounded by flowers
+- a toy rabbit
+- a toy house
+- a duck
+
+The model sucks. It's really good at recognizing images made with stable diffusion (as it should be), but it sucks for the hcaptcha prompts
+
+
+If you want the full dataset (of the stable diffusion images, i dont know why you would want them though) make an issue and ill add it to releases (or something)
 
 
 # hCaptcha-Solvers
