@@ -7,10 +7,12 @@ I have trained a yolov7 model on the following prompts:
 - a horse running
 - a penguin surrounded by flowers
 - a toy rabbit
+- a toy turtle
 - a toy house
 - a duck
 
-The model sucks. It's really good at recognizing images made with stable diffusion (as it should be), but it sucks for the hcaptcha prompts
+~~The model sucks. It's really good at recognizing images made with stable diffusion (as it should be), but it sucks for the hcaptcha prompts~~
+This model isn't as bad as I thought it was, it has recently been performing pretty well.
 
 
 If you want the full dataset (of the stable diffusion images, i dont know why you would want them though) make an issue and ill add it to releases (or something)
@@ -48,15 +50,17 @@ I'm not sure how effective the prompt extractor is on 1 ip, I would recommend pr
 Todo
 
 
-
 ## Training
 
-Make several thousand 512x512 images (I know hcaptcha uses 122x122, but stable diffusion doesn't do a great job making those images) with img2img with the base image as an actual image from hCaptcha (For best results only make a couple of hundred images (still figuring out the exact number) for each real image). 
-
+I made a couple thousand images for each class, later on I will do this with only a 1k images for each class.
 Make sure that the images stick to the general idea of the base image while also being different enough.
 
-Settings you should mess with:
-Denoising strength (with my limited testing I have found between 0.67-0.73 works the best. I like 0.72, but it varies for each image)
-Sampling steps (if you want better images)
+Generate img2img images with stable diffusion (0.72 on denoising strength, all the other settings I have liked)
+Go into <stable-diffusion-dir>/outputs/img2img-samples/samples/<all-your-classes>
+Take all of those files and paste them over into hCaptcha-Solvers/images/train/
+Then run gen_labels.py
+Next put make a yolov7 compatible dataset (ex. yolov7/hcaptcha/images/train/, yolov7/hcaptcha/label/train/, yolov7/hcaptcha/images/val/, yolov7/hcaptcha/label/val/)
+Then train it using yolov7's train.py
 
-I'll probably do all ^ later, but until then you have to figure out what works
+
+#### I WILL NOT BE HELPING ANYONE WITH TRAINING, IF YOU'RE TRYING TO TRAIN YOUR OWN MODEL I AM EXPECTING THAT YOU ALREADY HAVE SOME EXPERIENCE WITH YOLO 

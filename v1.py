@@ -4,10 +4,9 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
-import undetected_chromedriver as uc
-from difflib import SequenceMatcher
-import selenium.common.exceptions
 from colorama import Style, Fore, init
+import undetected_chromedriver as uc
+import selenium.common.exceptions
 from time import sleep
 import pyautogui
 import random
@@ -38,13 +37,10 @@ def predict(model, path):
     return results
 
 
-def similar(a, b):
-    return SequenceMatcher(None, a, b).ratio()
-
-
 def refresh(driver):
     actions = ActionChains(driver)
     actions.move_to_element(driver.find_element(By.XPATH, "/html/body/div[2]/div[7]/div[2]")).click().perform()
+    print("Refreshed")  # todo if prompt in supported prompt list then dont refresh
 
 
 def load_cap(driver):
@@ -67,8 +63,7 @@ def load_cap(driver):
 
     # todo x and y for above are broken, must be something weird with iframes
 
-    points = hc.get_points(start=pyautogui.position(), end=(1156, 827),
-                           knotCounts=0)  # if this part is breaking for you its because these coords are hard coded (duh) and i havent gotten the above x + y coords correct yet
+    points = hc.get_points(start=pyautogui.position(), end=(1156, 827), knotCounts=0)  # if this part is breaking for you its because these coords are hard coded (duh) and i havent gotten the above x + y coords correct yet
 
     for point in points:
         pyautogui.moveTo(point)
@@ -106,8 +101,7 @@ def solve(driver, model, prompt):
         df = results.pandas().xyxy[0]
 
         for detection in df.loc[:, "name"].values:
-            sim = similar(prompt, detection)
-            if sim >= 0.5 or detection in prompt:
+            if detection in prompt:
                 print(f"{yellow}Detected {prompt}")
                 correct_images.add(img_el)
                 break
@@ -130,16 +124,6 @@ def solve(driver, model, prompt):
     sleep(0.0765)
     actions.click().perform()
 
-    sleep(2)
-
-    try:
-        button_txt = driver.find_element(By.XPATH, "/html/body/div[2]/div[8]/div").text
-    except selenium.common.exceptions.NoSuchElementException:
-        button_txt = "Done"
-
-    return button_txt
-
-
 
 def main():
     attempts = 1
@@ -151,16 +135,36 @@ def main():
 
     load_cap(driver)
 
-    button_txt = driver.find_element(By.XPATH, "/html/body/div[2]/div[8]/div").text
-    while button_txt == "Skip" or button_txt == "Verify" and attempts <= 8:
+
+    while True:
         sleep(2)
         print(f"{yellow}Solving. Attempt: {attempts}")
-        button_txt = solve(driver, model, driver.find_element(By.XPATH, "/html/body/div[1]/div/div/div[1]/div[1]/div[1]/h2/span").text[35:])
-        print(button_txt)
+        try:
+            prompt = driver.find_element(By.XPATH, "/html/body/div[1]/div/div/div[1]/div[1]/div[1]/h2/span").text[35:]
+            print(prompt)
+        except:
+            break
+
+        button_txt = solve(driver, model, prompt)
+
+        try:
+            driver.switch_to.frame(driver.find_element(By.XPATH, "/html/body/div[1]/iframe"))
+            checked = driver.find_element(By.ID, "checkbox").get_attribute("aria-checked")
+            if checked == "true":
+                break
+        except:
+            pass
+
         attempts += 1
 
         if button_txt == "Skip" and attempts > 3:
             refresh(driver)
+
+    driver.switch_to.default_content()
+    token = driver.execute_script("return hcaptcha.getResponse()")
+    print("Finished")
+    print(f"Token: {token}")
+
 
     sleep(5)
 
