@@ -55,12 +55,12 @@ Todo
 I made a couple thousand images for each class, later on I will do this with only a 1k images for each class.
 Make sure that the images stick to the general idea of the base image while also being different enough.
 
-Generate img2img images with stable diffusion (0.72 on denoising strength, all the other settings I have liked)
-Go into <stable-diffusion-dir>/outputs/img2img-samples/samples/<all-your-classes>
-Take all of those files and paste them over into hCaptcha-Solvers/images/train/
-Then run gen_labels.py
-Next put make a yolov7 compatible dataset (ex. yolov7/hcaptcha/images/train/, yolov7/hcaptcha/label/train/, yolov7/hcaptcha/images/val/, yolov7/hcaptcha/label/val/)
-Then train it using yolov7's train.py
+- Generate img2img images with stable diffusion (0.72 on denoising strength, all the other settings I have liked)
+- Go into <stable-diffusion-dir>/outputs/img2img-samples/samples/<all-your-classes>
+- Take all of those files and paste them over into hCaptcha-Solvers/images/train/
+- Then run gen_labels.py
+- Next put make a yolov7 compatible dataset (ex. yolov7/hcaptcha/images/train/, yolov7/hcaptcha/label/train/, yolov7/hcaptcha/images/val/, yolov7/hcaptcha/label/val/)
+- Then train it using yolov7's train.py
 
 
 #### I WILL NOT BE HELPING ANYONE WITH TRAINING, IF YOU'RE TRYING TO TRAIN YOUR OWN MODEL I AM EXPECTING THAT YOU ALREADY HAVE SOME EXPERIENCE WITH YOLO 
