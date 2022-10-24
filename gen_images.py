@@ -7,7 +7,7 @@ import cv2
 import os
 
 ua = "Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101 Firefox/102.0"
-
+# didnt realize that stable diffusion has api docs.. might remake this later, im not going to bother now though
 
 def extract(prompt, num_imgs, denoising, img_path):
     jpg_img = cv2.imencode('.jpg', cv2.imread(img_path))

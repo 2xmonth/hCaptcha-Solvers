@@ -52,8 +52,8 @@ def load_cap(driver):
     WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.XPATH, "/html/body/div/div[1]/div[1]/div/div/div[1]")))
     sleep(0.3)
 
-    # box_dim = driver.find_element(By.XPATH, "/html/body/div/div[1]/div[1]/div/div/div[1]")
-    #
+    box_dim = driver.find_element(By.XPATH, "/html/body/div/div[1]/div[1]/div/div/div[1]")
+
     # box_el_x = box_dim.location["x"]
     # box_el_y = box_dim.location["y"]
     # box_el_width = box_dim.size["width"] // 2
@@ -61,16 +61,17 @@ def load_cap(driver):
     #
     # box_mid = (box_el_x + box_el_width, box_el_y + box_el_height)
 
-    # todo x and y for above are broken, must be something weird with iframes
+    # points = hc.get_points(start=pyautogui.position(), end=(1156, 827), knotCounts=0)  # if this part is breaking for you its because these coords are hard coded (duh) and i havent gotten the above x + y coords correct yet
+    #
+    # for point in points:
+    #     pyautogui.moveTo(point)
+    #
+    # sleep(0.08)
+    #
+    # pyautogui.click()
 
-    points = hc.get_points(start=pyautogui.position(), end=(1156, 827), knotCounts=0)  # if this part is breaking for you its because these coords are hard coded (duh) and i havent gotten the above x + y coords correct yet
-
-    for point in points:
-        pyautogui.moveTo(point)
-
-    sleep(0.08)
-
-    pyautogui.click()
+    actions = ActionChains(driver)
+    actions.click(box_dim)
     driver.switch_to.default_content()
 
     iframe = None
@@ -125,10 +126,10 @@ def solve(driver, model, prompt):
     actions.click().perform()
 
 
-def main():
+def main():  # todo human mouse movements + selenium
     attempts = 1
     model = load_model()
-    driver = uc.Chrome(headless=False)  # im using pyautogui for testing, so once thats gone you will be able to use headless
+    driver = uc.Chrome(headless=False)  # headless is broken
     driver.maximize_window()
 
     print("\n\n")
